@@ -9,10 +9,12 @@ public class DirectorScript : MonoBehaviour
     public Material human;
     public Material agent;
 
+    private Animator[] animatorsInTheScene;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        animatorsInTheScene = FindObjectsOfType(typeof(Animator)) as Animator[];
     }
 
     // Update is called once per frame
@@ -36,8 +38,22 @@ public class DirectorScript : MonoBehaviour
 
 
             }
+        }
 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            foreach (Animator animatorItem in animatorsInTheScene)
+            {
+                animatorItem.GetComponent<Animator>().enabled = false;
+            }
+        }
 
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            foreach (Animator animatorItem in animatorsInTheScene)
+            {
+                animatorItem.GetComponent<Animator>().enabled = true;
+            }
         }
     }
 }
