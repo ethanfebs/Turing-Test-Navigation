@@ -1,0 +1,18 @@
+﻿<Properties StartupConfiguration="{431451D9-5E7D-C8B2-CF7D-C33A851E0486}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/CameraController.cs">
+    <Files>
+      <File FileName="Assets/PlayerController.cs" Line="10" Column="22" />
+      <File FileName="Assets/CameraController.cs" Line="98" Column="21" />
+      <File FileName="Assets/ObstacleController.cs" Line="16" Column="39" />
+      <File FileName="Assets/DynamicObstacleController.cs" Line="31" Column="25" />
+      <File FileName="Assets/NazgulController.cs" Line="16" Column="1" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="Unity.Editor" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
