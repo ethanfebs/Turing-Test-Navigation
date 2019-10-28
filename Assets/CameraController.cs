@@ -15,8 +15,6 @@ public class CameraController : MonoBehaviour
     public ObstacleController oController;
     List<PlayerController> pControllers;
 
-    
-
     GameObject[] playerArr;
     GameObject[] exitArr;
     bool endGame = false;
