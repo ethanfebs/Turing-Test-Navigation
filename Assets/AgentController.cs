@@ -11,14 +11,22 @@ public class AgentController : MonoBehaviour
     Camera cam;
     List<PlayerController> pControllers;
 
+    public GameObject controlledPrefab;
+    public GameObject playerPrefab;
+
     GameObject[] playerArr;
     GameObject[] exitArr;
     bool endGame = false;
     Vector3 goal;
 
+    int numPlayers = 9; // total number of players to spawn (including controlled player)
+    int spawnDist = 3; // distance between players at spawn
+
     // Start is called before the first frame update
     void Start()
     {
+        SpawnPlayers();
+
         cam = gameObject.GetComponent("Camera") as Camera;
         pControllers = new List<PlayerController>();
 
@@ -45,6 +53,38 @@ public class AgentController : MonoBehaviour
 
         //pPositions = new Vector3[6];
         //nPositions = new Vector3[2];
+    }
+
+    // Spawns single controlled player in group of agents at center of map
+    private void SpawnPlayers()
+    {
+        int square = (int)Mathf.Sqrt(numPlayers);
+        var players = new List<GameObject>(); // replace Player array?
+        int startPos = 4;
+        GameObject spawnObject;
+        //int startPos = Random.Range(0, numPlayers);
+
+        for (int i = 0; i < numPlayers; i++)
+        {
+            int row = (i / square) - square / 2;
+            int col = (i % square) - square / 2;
+
+            if (i == startPos)
+            {
+                // Spawn controlled player at start position
+                spawnObject = Instantiate(controlledPrefab);
+                controlledTransform = spawnObject.transform;
+            }
+            else
+            {
+                // Spawn agent
+                spawnObject = Instantiate(playerPrefab);
+                players.Add(spawnObject);
+            }
+
+            // Change position of spawn based on list index
+            spawnObject.transform.position = new Vector3(row, 0, col) * spawnDist;
+        }
     }
 
     private void Update()
