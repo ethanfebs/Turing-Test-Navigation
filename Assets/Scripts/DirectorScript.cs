@@ -42,9 +42,9 @@ public class DirectorScript : MonoBehaviour
                     if (hit.transform.tag == "Player")
                     {
                         if (selected != null)
-                            selected.GetComponent<Renderer>().material = agent;
+                            selected.GetComponentInChildren<Renderer>().material = agent;
                         selected = hit.transform.gameObject;
-                        selected.GetComponent<Renderer>().material = human;
+                        selected.GetComponentInChildren<Renderer>().material = human;
                     }
 
 
