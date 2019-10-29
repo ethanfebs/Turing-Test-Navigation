@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+
 
 public class DirectorScript : MonoBehaviour
 {
@@ -11,6 +13,11 @@ public class DirectorScript : MonoBehaviour
 
     private Animator[] animatorsInTheScene;
 
+    public TMP_Text EndText;
+    float timer = 0;
+    float EndTime;
+    bool over = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,42 +25,68 @@ public class DirectorScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+        timer += Time.deltaTime;
 
-            if (Physics.Raycast(ray, out hit/*, 100*/))
+        if (!over)
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
+
+                if (Physics.Raycast(ray, out hit/*, 100*/))
+                {
+
+                    if (hit.transform.tag == "Player")
+                    {
+                        if (selected != null)
+                            selected.GetComponent<Renderer>().material = agent;
+                        selected = hit.transform.gameObject;
+                        selected.GetComponent<Renderer>().material = human;
+                    }
+
+
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                foreach (Animator animatorItem in animatorsInTheScene)
+                {
+                    animatorItem.GetComponent<Animator>().enabled = false;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                foreach (Animator animatorItem in animatorsInTheScene)
+                {
+                    animatorItem.GetComponent<Animator>().enabled = true;
+                }
+            }
+
+            if (Input.GetKeyDown(KeyCode.Return))
             {
 
-                if (hit.transform.tag == "Player")
+                over = true;
+
+                EndTime = timer;
+
+                foreach (Animator animatorItem in animatorsInTheScene)
                 {
-                    if (selected != null)
-                        selected.GetComponent<Renderer>().material = agent;
-                    selected = hit.transform.gameObject;
-                    selected.GetComponent<Renderer>().material = human;
+                    animatorItem.GetComponent<Animator>().enabled = false;
                 }
 
+                string minutes = Mathf.Floor(EndTime / 60).ToString("0");
+                string seconds = Mathf.Floor(EndTime % 60).ToString("00");
 
-            }
-        }
+                EndText.text = "Total Time: " + minutes + ":" + seconds;
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            foreach (Animator animatorItem in animatorsInTheScene)
-            {
-                animatorItem.GetComponent<Animator>().enabled = false;
+                print(EndTime.ToString());
             }
-        }
 
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            foreach (Animator animatorItem in animatorsInTheScene)
-            {
-                animatorItem.GetComponent<Animator>().enabled = true;
-            }
         }
     }
 }
