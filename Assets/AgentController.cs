@@ -79,6 +79,7 @@ public class AgentController : MonoBehaviour
             {
                 // Spawn agent
                 spawnObject = Instantiate(playerPrefab);
+                spawnObject.name = $"Player({i})";
                 players.Add(spawnObject);
             }
 

@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6626772045801701259}
   - component: {fileID: 6626772045801701260}
   - component: {fileID: 6626772045801701263}
+  - component: {fileID: 2753736765938851619}
   m_Layer: 9
   m_Name: Player
   m_TagString: Player
@@ -132,3 +133,26 @@ MonoBehaviour:
   cam: {fileID: 0}
   agent: {fileID: 6626772045801701260}
   modeText: {fileID: 0}
+--- !u!114 &2753736765938851619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6626772045801701258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9d61879c2b6b4edcabca7e5b99f7d55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  savePath: Assets/Unity Runtime Recorder/Recordings/
+  fileName: -Animation
+  startRecordKey: 113
+  stopRecordKey: 32
+  showLogGUI: 0
+  recordLimitedFrames: 0
+  recordFrames: 1000
+  changeTimeScale: 0
+  timeScaleOnStart: 0
+  timeScaleOnRecord: 1
+  recordBlendShape: 0
