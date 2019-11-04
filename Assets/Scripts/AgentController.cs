@@ -60,9 +60,9 @@ public class AgentController : MonoBehaviour
     {
         int square = (int)Mathf.Sqrt(numPlayers);
         var players = new List<GameObject>(); // replace Player array?
-        int startPos = 4;
+        //int startPos = 4;
         GameObject spawnObject;
-        //int startPos = Random.Range(0, numPlayers);
+        int startPos = Random.Range(0, numPlayers);
 
         for (int i = 0; i < numPlayers; i++)
         {
@@ -80,11 +80,12 @@ public class AgentController : MonoBehaviour
                 // Spawn agent
                 spawnObject = Instantiate(playerPrefab);
                 spawnObject.name = $"Player({i})";
+                spawnObject.GetComponent<UnityAnimationRecorder>().fileName = $"Player-{i}-Animation";
                 players.Add(spawnObject);
             }
 
             // Change position of spawn based on list index
-            spawnObject.transform.position = new Vector3(row, 0, col) * spawnDist;
+            spawnObject.transform.position = new Vector3(row, 0.1f, col) * spawnDist;
         }
     }
 

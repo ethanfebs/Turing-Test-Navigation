@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   savePath: Assets/Unity Runtime Recorder/Recordings/
-  fileName: -Animation
+  fileName: Player-Animation
   startRecordKey: 113
   stopRecordKey: 32
   showLogGUI: 0
