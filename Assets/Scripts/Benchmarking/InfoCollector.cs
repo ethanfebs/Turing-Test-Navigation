@@ -76,10 +76,10 @@ public class InfoCollector : MonoBehaviour {
 
     private void FixedUpdate()
     {
-        Update(transform.position);
+        PositionUpdate(transform.position);
     }
 
-    public void Update(float3 position) {
+    public void PositionUpdate(float3 position) {
         if (posToVel.Update(position))    //Compute velocity from position
         {
             var vel = posToVel.Next();
