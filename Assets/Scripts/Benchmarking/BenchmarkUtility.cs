@@ -8,12 +8,15 @@ using UnityEngine;
 public class BenchmarkUtility
 {
     //Logging
-    p/*rivate static Func<string> logHeader = () => Parameters.Benchmarking.COLUMNAR_LOGGING ? "" :
+    /*private static Func<string> logHeader = () => Parameters.Benchmarking.COLUMNAR_LOGGING ? "" :
         string.Join(",\t", Enum.GetValues(typeof(IterationStat)).Cast<IterationStat>().Select(s => s.ToString())) + ",\t" +
         string.Join(",\t", Enum.GetValues(typeof(AgentStat)).Cast<AgentStat>().Select(s => "avg_" + s.ToString())) + ",\t" +
         string.Join(",\t", Enum.GetValues(typeof(AgentStat)).Cast<AgentStat>().Select(s => "max_" + s.ToString())) + ",\t" +
         string.Join(",\t", Enum.GetValues(typeof(AgentStat)).Cast<AgentStat>().Select(s => "min_" + s.ToString()));
     private static string log = "";*/
+
+    public static List<InfoCollector> allInfoCollectors;
+    public static int agentCount;
 
     #region Enums
 
@@ -66,12 +69,19 @@ public class BenchmarkUtility
 
     #region Public Functions
 
+
+    public static void AddInfoCollector(InfoCollector ic, bool isAgent)
+    {
+        allInfoCollectors.Add(ic);
+        if (isAgent) agentCount++;
+    }
+
     public static void ComputeStatistics()
     {
         var iterationStats = ComputeIterationStatistics();
 
         var agentStats = new List<Dictionary<AgentStat, float>>();
-        foreach (var infoCollector in BenchmarkingModule.allInfoCollectors)
+        foreach (var infoCollector in allInfoCollectors)
         {
             agentStats.Add(ComputeAgentStatistics(infoCollector));
         }
@@ -81,6 +91,7 @@ public class BenchmarkUtility
         var minStats = MinAgentStats(agentStats);
 
         //if (Parameters.Benchmarking.COLUMNAR_LOGGING)
+        /*
         if(false)
         {
             log = StatsToString(iterationStats) + "\n" + StatsToString(avgStats, "avg_") + "\n" + StatsToString(maxStats, "max_") + "\n" + StatsToString(minStats, "min_") + "\n";
@@ -88,15 +99,17 @@ public class BenchmarkUtility
         {
             log = StatsToString(iterationStats) + ",\t" + StatsToString(avgStats) + ",\t" + StatsToString(maxStats) + ",\t" + StatsToString(minStats);
         }
+        */
     }
     
     public static void PrintLog()
     {
-        Debug.Log(logHeader.Invoke() + "\n" + log);
+        //Debug.Log(logHeader.Invoke() + "\n" + log);
     }
 
     public static void Save(string path)
     {
+        /*
         if (File.Exists(path))
         {
             File.AppendAllText(path, log + "\n");
@@ -107,6 +120,7 @@ public class BenchmarkUtility
             sr.WriteLine(log);
             sr.Close();
         }
+        */
     }
 
     #endregion
@@ -124,19 +138,20 @@ public class BenchmarkUtility
             switch (stat)
             {
                 case IterationStat.AGENT_COUNT:
-                    val = BenchmarkingModule.agentCount;
+                    val = agentCount;
                     break;
                 case IterationStat.ELAPSED_FRAMES:
-                    val = Updater.elapsedFrames;
+                    val = Time.frameCount;
                     break;
                 case IterationStat.SIMULATION_DURATION:
-                    val = Updater.elapsedFrames * fixedDeltaTime; 
+                    val = Time.frameCount * Time.fixedDeltaTime; 
                     break;
                 case IterationStat.REAL_TIME_DURATION:
-                    val = Updater.iterationStopwatch.ElapsedMilliseconds / 1000f;
+                    //val = Updater.iterationStopwatch.ElapsedMilliseconds / 1000f;
+                    val = Time.time; // time in seconds since game start
                     break;
                 case IterationStat.AVERAGE_FPS:
-                    val = Updater.elapsedFrames / (Updater.iterationStopwatch.ElapsedMilliseconds / 1000f);
+                    val = Time.frameCount / Time.time;
                     break;
             }
 
@@ -149,6 +164,7 @@ public class BenchmarkUtility
     private static Dictionary<AgentStat, float> ComputeAgentStatistics(InfoCollector info)
     {
         var stats = new Dictionary<AgentStat, float>();
+        var fixedDeltaTime = Time.fixedDeltaTime;
 
         foreach (var stat in Enum.GetValues(typeof(AgentStat)).Cast<AgentStat>())
         {

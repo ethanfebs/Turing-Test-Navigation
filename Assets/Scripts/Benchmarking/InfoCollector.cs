@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class InfoCollector {
+public class InfoCollector : MonoBehaviour {
     
     public Vector3 initialPos;
     public Vector3 targetPos;
@@ -50,10 +50,10 @@ public class InfoCollector {
 
         //Refer to Equation 2 in "PLEdestrians: A Least-Effort Approach to Crowd Simulation"
         speedToMetabolicEnergy = new MetricSEQ<float, float>((data) => {
-            var speed = data / Parameters.Simulation.FIXED_DELTA_TIME;
+            var speed = data / Time.fixedDeltaTime;
 
             var kineticEnergy = mass * (2.23f + 1.26f * speed * speed);
-            kineticEnergy *= Parameters.Simulation.FIXED_DELTA_TIME;
+            kineticEnergy *= Time.fixedDeltaTime;
 
             return kineticEnergy;
         }, (a, b) => a + b, 0);
@@ -69,9 +69,17 @@ public class InfoCollector {
         angleToAbs = new MetricSEQ<float, float>((data) => {
             return Mathf.Abs(data);
         }, (a, b) => a + b, 0);
+
+        bool isAgent = (gameObject.CompareTag("Player")) ;
+        BenchmarkUtility.AddInfoCollector(this, isAgent);
     }
-	
-	public void Update(float3 position) {
+
+    private void FixedUpdate()
+    {
+        Update(transform.position);
+    }
+
+    public void Update(float3 position) {
         if (posToVel.Update(position))    //Compute velocity from position
         {
             var vel = posToVel.Next();
