@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
-  agent: {fileID: 6626772045801701260}
+  agent: {fileID: 6626772045801701260, guid: 28d7c777c3046a84595c513c46b1784a, type: 3}
   modeText: {fileID: 0}
 --- !u!114 &2753736765938851619
 MonoBehaviour:

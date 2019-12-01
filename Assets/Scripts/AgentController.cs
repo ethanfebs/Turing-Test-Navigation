@@ -44,13 +44,13 @@ public class AgentController : MonoBehaviour
         //print(playerArr.Length.ToString());
 
         int dest;
-
+        /*
         foreach (GameObject p in playerArr)
         {
             dest = Random.Range(0, 7);
 
             p.GetComponent<NavMeshAgent>().SetDestination(exitArr[0].GetComponent<Transform>().position);
-        }
+        }*/
 
         dest = Random.Range(0, 7);
 
