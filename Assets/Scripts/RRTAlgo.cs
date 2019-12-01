@@ -28,6 +28,8 @@ public class RRTAlgo : MonoBehaviour
     Vector3 curDest;
     public float speed;
 
+    Vector3 offset;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,10 +40,12 @@ public class RRTAlgo : MonoBehaviour
         floor = GameObject.FindWithTag("floor");
         step = 1.5f;
         maxSteps = 10000;
-        speed = 10.0f;
+        speed = 5.0f;
         obCol = new List<Collider>();
 
         obs = GameObject.FindGameObjectsWithTag("obstacles");
+
+        offset = new Vector3(0, GetComponent<Collider>().bounds.extents.y, 0);
         
         int count = 0;
         foreach (GameObject ob in obs)
@@ -90,7 +94,7 @@ public class RRTAlgo : MonoBehaviour
     {
         
 
-        float dis = Vector3.Distance(transform.position, curDest);
+        float dis = Vector3.Distance(transform.position-offset, curDest);
         if (dis > .01f)
         {
             
@@ -118,7 +122,7 @@ public class RRTAlgo : MonoBehaviour
             transform.position += transform.forward * speed * Time.deltaTime;*/
 
             float walk = speed * Time.fixedDeltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, curDest, walk);
+            transform.position = Vector3.MoveTowards(transform.position, curDest+offset, walk);
             //print("still in this pos");
 
         }
@@ -161,13 +165,13 @@ public class RRTAlgo : MonoBehaviour
 
             if (flag)
             {
-                Debug.DrawLine(closest.pos, nextStep, Color.red, 2.5f);
+                Debug.DrawLine(closest.pos, nextStep, Color.red, 30f);
                 continue;
             }
 
             else
             {
-                Debug.DrawLine(closest.pos, nextStep, Color.white, 2.5f);
+                Debug.DrawLine(closest.pos, nextStep, Color.white, 30f);
                 TreeNode newLeaf = new TreeNode(new Vector3(nextStep.x, 0f, nextStep.z));
                 closest.AddChild(newLeaf);
                 return newLeaf;
