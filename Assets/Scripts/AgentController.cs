@@ -18,9 +18,11 @@ public class AgentController : MonoBehaviour
     GameObject[] exitArr;
     bool endGame = false;
     Vector3 goal;
-
+    int doneCount = 0;
     int numPlayers = 9; // total number of players to spawn (including controlled player)
-    int spawnDist = 3; // distance between players at spawn
+    int spawnDist = 6; // distance between players at spawn
+    bool[] doneArr;
+    bool noAnimations = true;
 
     // Start is called before the first frame update
     void Start()
@@ -32,8 +34,14 @@ public class AgentController : MonoBehaviour
 
         playerArr = GameObject.FindGameObjectsWithTag("Player");
         exitArr = GameObject.FindGameObjectsWithTag("Exit");
+        doneArr = new bool[9];
 
-        print(playerArr.Length.ToString());
+        for(int x = 0; x < doneArr.Length; x++)
+        {
+            doneArr[x] = false;
+        }
+
+        //print(playerArr.Length.ToString());
 
         int dest;
 
@@ -41,14 +49,14 @@ public class AgentController : MonoBehaviour
         {
             dest = Random.Range(0, 7);
 
-            p.GetComponent<NavMeshAgent>().SetDestination(exitArr[dest].GetComponent<Transform>().position);
+            p.GetComponent<NavMeshAgent>().SetDestination(exitArr[0].GetComponent<Transform>().position);
         }
 
         dest = Random.Range(0, 7);
 
-        exitArr[dest].GetComponent<Renderer>().material.SetColor("_Color", Color.red);
+        exitArr[0].GetComponent<Renderer>().material.SetColor("_Color", Color.red);
 
-        goal = exitArr[dest].GetComponent<Transform>().position;
+        goal = exitArr[0].GetComponent<Transform>().position;
         goal.y += 2.6f;
 
         //pPositions = new Vector3[6];
@@ -74,6 +82,10 @@ public class AgentController : MonoBehaviour
                 // Spawn controlled player at start position
                 spawnObject = Instantiate(controlledPrefab);
                 controlledTransform = spawnObject.transform;
+                spawnObject.transform.position = new Vector3(row, 0f, col) * spawnDist;
+                spawnObject.GetComponent<UnityAnimationRecorder>().fileName = $"Player-{i}-Animation";
+                spawnObject.GetComponent<UnityAnimationRecorder>().StartRecording();
+                print("HUMAN CONTROLLED PLAYER: " + i);
             }
             else
             {
@@ -81,27 +93,47 @@ public class AgentController : MonoBehaviour
                 spawnObject = Instantiate(playerPrefab);
                 spawnObject.name = $"Player({i})";
                 spawnObject.GetComponent<UnityAnimationRecorder>().fileName = $"Player-{i}-Animation";
+                spawnObject.transform.position = new Vector3(row, 0f, col) * spawnDist + new Vector3(0,2.0f,0);
                 players.Add(spawnObject);
+                spawnObject.GetComponent<UnityAnimationRecorder>().StartRecording();
             }
 
             // Change position of spawn based on list index
-            spawnObject.transform.position = new Vector3(row, 0.1f, col) * spawnDist;
+
+            
         }
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         Transform pTrans;
         Transform p2Trans;
         PlayerController pCont;
         PlayerController p2Cont;
 
-        foreach (GameObject p in playerArr)
+        for(int x=0;x<playerArr.Length;x++)
         {
+            GameObject p = playerArr[x];
+
             pTrans = p.GetComponent("Transform") as Transform;
 
 
             pCont = p.GetComponent("PlayerController") as PlayerController;
+
+            if (pTrans.position.z > 47 && pTrans.position.z < 53 && pTrans.position.x > -3 && pTrans.position.x < 3) {
+
+
+                p.GetComponent<NavMeshAgent>().enabled = false;
+                //p.GetComponent<UnityAnimationRecorder>().StopRecording();
+                //p.SetActive(false);
+                p.transform.position = new Vector3(-500+doneCount*5, 0, 0);
+                doneArr[x] = true;
+                //pCont.setTarget(pTrans.position + new Vector3(0, 0, 20));
+                doneCount++;
+                //print(doneCount);
+
+            }
+
 
 
             //"Bunching" Prevention Algorithm
@@ -112,10 +144,13 @@ public class AgentController : MonoBehaviour
 
                 p2Cont = p.GetComponent("PlayerController") as PlayerController;
 
-                if (!ReferenceEquals(p, p2))
+                /*if (!ReferenceEquals(p, p2))
                 {
                     if (Vector3.Distance(p2Cont.agent.destination, pCont.agent.destination) < 2)
                     {
+
+                        
+
                         if (Vector3.Distance(p2Trans.position, p2Cont.agent.destination) < 2)
                         {
                             p2Cont.setTarget(p2Trans.position);
@@ -123,10 +158,46 @@ public class AgentController : MonoBehaviour
 
 
                     }
-                }
+                }*/
             }
         }
 
-        endGame = Vector3.Distance(controlledTransform.position, goal) < 1;
+        if (controlledTransform.position.z > 47 && controlledTransform.position.z < 53 && controlledTransform.position.x > -3 && controlledTransform.position.x < 3)
+        {
+            controlledTransform.gameObject.GetComponent<FirstPersonAIO>().playerCanMove = false;
+            controlledTransform.gameObject.GetComponentInChildren<CapsuleCollider>().enabled = false;
+            //controlledTransform.gameObject.GetComponentInChildren<UnityAnimationRecorder>().StopRecording();
+            //controlledTransform.gameObject.SetActive(false);
+            controlledTransform.position = new Vector3(-500+doneCount*5, -2, 0);
+            doneArr[8] = true;
+            doneCount++;
+            //print(doneCount);
+        }
+
+
+        bool allDone = true;
+
+        foreach(bool b in doneArr)
+        {
+
+            if (!b) { allDone = false; }
+        }
+
+        if (allDone && noAnimations)
+        {
+
+            noAnimations = false;
+
+            foreach (GameObject p in playerArr)
+            {
+                p.GetComponent<UnityAnimationRecorder>().StopRecording();
+            }
+
+            controlledTransform.gameObject.GetComponent<UnityAnimationRecorder>().StopRecording();
+
+
+        }
+
+        //endGame = Vector3.Distance(controlledTransform.position, goal) < 1;
     }
 }
