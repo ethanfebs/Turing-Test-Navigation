@@ -118,7 +118,7 @@ public class BenchmarkUtility
         iterationStatsCSV += StatsToString(iterationStats);
 
         // Save file
-        var postFilename = "_" + DateTime.Now.ToString("MMddyy_Hmm") + ".txt";
+        var postFilename = "_" + DateTime.Now.ToString("MMddyy_Hmm") + ".csv";
         Debug.Log("Metric reporting (Individual): \n" + metricCSV);
         Save(Application.dataPath + "/Report", "MetricReportingInd" + postFilename, metricCSV);
         Debug.Log("Metric reporting (General): \n" + generalCSV);
