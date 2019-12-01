@@ -30,9 +30,14 @@ public class RRTAlgo : MonoBehaviour
 
     Vector3 offset;
 
+    bool canMove;
+
+    public int priorityNum;
+
     // Start is called before the first frame update
     void Start()
     {
+        canMove = true;
         startX = transform.position.x;
         startY = transform.position.y;
 
@@ -47,21 +52,24 @@ public class RRTAlgo : MonoBehaviour
 
         offset = new Vector3(0, GetComponent<Collider>().bounds.extents.y, 0);
         
-        int count = 0;
         foreach (GameObject ob in obs)
         {
             obCol.Add(ob.GetComponent<Collider>());
-            print(count);
-            count++;
         }
 
-        tree = new Tree(transform.position);
+        FindPath(false);
+        
+    }
+
+    void FindPath(bool blocked)
+    {
+        tree = new Tree(transform.position - offset);
         curSteps = 0;
         TreeNode curLeaf = null;
-        
+
         while (curSteps < maxSteps)
         {
-            curLeaf = NextLeaf();
+            curLeaf = NextLeaf(blocked);
             if (goal.GetComponent<Collider>().bounds.Contains(curLeaf.pos))
             {
                 finalNode = curLeaf;
@@ -73,7 +81,7 @@ public class RRTAlgo : MonoBehaviour
         if (curSteps >= maxSteps)
         {
             finalNode = tree.FindClosest(goal.transform.position, tree.root);
-            Debug.DrawLine(curLeaf.pos, finalNode.pos, Color.white, 2.5f);
+            Debug.DrawLine(curLeaf.pos, finalNode.pos, Color.green, 2.5f);
 
         }
 
@@ -92,48 +100,54 @@ public class RRTAlgo : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        
-
-        float dis = Vector3.Distance(transform.position-offset, curDest);
-        if (dis > .01f)
+        if (canMove)
         {
-            
-            if (points.Count == 0)
+            float dis = Vector3.Distance(transform.position - offset, curDest);
+            if (dis > .01f)
             {
-                //enable navmesh agent and get to the end
+
+                if (points.Count == 0)
+                {
+                    //enable navmesh agent and get to the end
+                }
+                /*
+                // decide the moveDis for this frame. 
+                //(Mathf.Clamp limits the first value, to make sure if the distance between the player and the destination pos is short than you set,
+                // it only need to move to the destination. So at that moment, the moveDis should set to the "dis".)
+                //float moveDis = Mathf.Clamp(moveDisPerSec * Time.fixedDeltaTime, 0, dis);
+                float moveDis = Mathf.Clamp(.5f * Time.fixedDeltaTime, 0, dis);
+
+                //get the unit vector which means the move direction, and multiply by the move distance.
+                Vector3 move = (curDest - transform.position).normalized * moveDis;
+                transform.Translate(move);
+
+                //float walk = speed * Time.deltaTime;
+                //transform.position = Vector3.MoveTowards(transform.position, curDest, walk);
+                transform.rotation = Quaternion.Slerp(transform.rotation,
+     Quaternion.LookRotation(curDest - transform.position), 3 * Time.deltaTime);
+
+                //code for following the player
+                transform.position += transform.forward * speed * Time.deltaTime;*/
+
+                float walk = speed * Time.fixedDeltaTime;
+                transform.position = Vector3.MoveTowards(transform.position, curDest + offset, walk);
+                //print("still in this pos");
+
             }
-            /*
-            // decide the moveDis for this frame. 
-            //(Mathf.Clamp limits the first value, to make sure if the distance between the player and the destination pos is short than you set,
-            // it only need to move to the destination. So at that moment, the moveDis should set to the "dis".)
-            //float moveDis = Mathf.Clamp(moveDisPerSec * Time.fixedDeltaTime, 0, dis);
-            float moveDis = Mathf.Clamp(.5f * Time.fixedDeltaTime, 0, dis);
-
-            //get the unit vector which means the move direction, and multiply by the move distance.
-            Vector3 move = (curDest - transform.position).normalized * moveDis;
-            transform.Translate(move);
-
-            //float walk = speed * Time.deltaTime;
-            //transform.position = Vector3.MoveTowards(transform.position, curDest, walk);
-            transform.rotation = Quaternion.Slerp(transform.rotation,
- Quaternion.LookRotation(curDest - transform.position), 3 * Time.deltaTime);
-
-            //code for following the player
-            transform.position += transform.forward * speed * Time.deltaTime;*/
-
-            float walk = speed * Time.fixedDeltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, curDest+offset, walk);
-            //print("still in this pos");
-
+            else if (points.Count > 0)
+            {
+                curDest = points.Pop().pos;
+                //print("moving to next pos");
+            }
         }
-        else if (points.Count > 0)
+        else
         {
-            curDest = points.Pop().pos;
-            //print("moving to next pos");
+            float walk = -0.6f * speed * Time.fixedDeltaTime;
+            transform.position = Vector3.MoveTowards(transform.position, curDest + offset, walk);
         }
     }
 
-    TreeNode NextLeaf()
+    TreeNode NextLeaf(bool blocked)
     {
         Vector3 x;
         MeshFilter m = floor.GetComponent<MeshFilter>();
@@ -147,7 +161,10 @@ public class RRTAlgo : MonoBehaviour
         while (true)
         {
             flag = false;
-            x = floor.transform.position - new Vector3(Random.Range(min.x * 5, max.x * 5), floor.transform.position.y, Random.Range(min.z * 15, max.z * 15));
+            if (blocked && Random.Range(0.0f, 1.0f) < 0.25f)
+                x = goal.transform.position;
+            else
+                x = floor.transform.position - new Vector3(Random.Range(min.x * 5, max.x * 5), 0f/*floor.transform.position.y*/, Random.Range(min.z * 15, max.z * 15));
 
             TreeNode closest = tree.FindClosest(x, tree.root);
 
@@ -165,13 +182,13 @@ public class RRTAlgo : MonoBehaviour
 
             if (flag)
             {
-                Debug.DrawLine(closest.pos, nextStep, Color.red, 30f);
+                //Debug.DrawLine(closest.pos, nextStep, Color.red, 30f);
                 continue;
             }
 
             else
             {
-                Debug.DrawLine(closest.pos, nextStep, Color.white, 30f);
+                //Debug.DrawLine(closest.pos, nextStep, Color.white, 30f);
                 TreeNode newLeaf = new TreeNode(new Vector3(nextStep.x, 0f, nextStep.z));
                 closest.AddChild(newLeaf);
                 return newLeaf;
@@ -179,6 +196,31 @@ public class RRTAlgo : MonoBehaviour
         }
 
         
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+        Vector3 otherPos = col.gameObject.transform.position;
+        Vector3 goalPos = goal.transform.position;
+        Vector3 myPos = transform.position;
+        
+        if(col.tag == "Player" && col.gameObject != gameObject && Vector3.Distance(otherPos, goalPos) < Vector3.Distance(myPos, goalPos))
+        {
+            Debug.Log(gameObject.name);
+            StartCoroutine(Stopper());
+        }
+        
+        //Debug.Log(col.name);
+    }
+
+    IEnumerator Stopper()
+    {
+        //Debug.Log("fkldsja;flsdjf");
+        canMove = false;
+        //FindPath(true);
+        yield return new WaitForSeconds(0.5f);
+        canMove = true;
+        //yield return null;
     }
 
 }
