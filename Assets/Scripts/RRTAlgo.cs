@@ -42,10 +42,13 @@ public class RRTAlgo : MonoBehaviour
         obCol = new List<Collider>();
 
         obs = GameObject.FindGameObjectsWithTag("obstacles");
-        print(obs);
+        
+        int count = 0;
         foreach (GameObject ob in obs)
         {
             obCol.Add(ob.GetComponent<Collider>());
+            print(count);
+            count++;
         }
 
         tree = new Tree(transform.position);
@@ -88,7 +91,7 @@ public class RRTAlgo : MonoBehaviour
         
 
         float dis = Vector3.Distance(transform.position, curDest);
-        if (dis > 0.001f)
+        if (dis > .01f)
         {
             
             if (points.Count == 0)
@@ -116,13 +119,13 @@ public class RRTAlgo : MonoBehaviour
 
             float walk = speed * Time.fixedDeltaTime;
             transform.position = Vector3.MoveTowards(transform.position, curDest, walk);
-            print("still in this pos");
+            //print("still in this pos");
 
         }
         else if (points.Count > 0)
         {
             curDest = points.Pop().pos;
-            print("moving to next pos");
+            //print("moving to next pos");
         }
     }
 
