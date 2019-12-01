@@ -15,14 +15,17 @@ public class BenchmarkUtility
         string.Join(",\t", Enum.GetValues(typeof(AgentStat)).Cast<AgentStat>().Select(s => "min_" + s.ToString()));
     private static string log = "";*/
 
-    public static List<InfoCollector> allInfoCollectors;
+    public static List<InfoCollector> allInfoCollectors = new List<InfoCollector>();
     public static int agentCount;
 
     #region Enums
 
     public enum AgentStat
     {
-        // Primary Metrics
+        // Human or Agent
+        IS_AGENT,
+
+        // Primary Metric
         AGENT_COLLISION_COUNT,
         OBSTACLE_COLLISION_COUNT,
         AGENT_COMPLETION_TIME,
@@ -70,15 +73,21 @@ public class BenchmarkUtility
     #region Public Functions
 
 
-    public static void AddInfoCollector(InfoCollector ic, bool isAgent)
+    public static void AddInfoCollector(InfoCollector ic)
     {
         allInfoCollectors.Add(ic);
-        if (isAgent) agentCount++;
+        if (ic.isAgent == 1) agentCount++;
     }
 
-    // not complete yet
     public static void ComputeStatistics()
     {
+        string delim = ",";
+        string lineEnd = "\n";
+        string metricCSV = "";
+        string generalCSV = "";
+        string iterationStatsCSV = "";
+        var agentStatsEnums = Enum.GetValues(typeof(AgentStat)).Cast<AgentStat>();
+
         var iterationStats = ComputeIterationStatistics();
 
         var agentStats = new List<Dictionary<AgentStat, float>>();
@@ -91,10 +100,31 @@ public class BenchmarkUtility
         var maxStats = MaxAgentStats(agentStats);
         var minStats = MinAgentStats(agentStats);
 
-        foreach (var metric in Enum.GetValues(typeof(AgentStat)))
+        // Individual metrics
+        metricCSV += string.Join(delim, agentStatsEnums.Select(x=>x.ToString())) + lineEnd; //Title
+        foreach (var stat in agentStats)
         {
-            foreach (var infoCollector in allInfoCollectors);
+            metricCSV += StatsToString(stat);
+            metricCSV += lineEnd;
         }
+
+        // General metrics
+        generalCSV += string.Join(delim, agentStatsEnums.Select(x => x.ToString())) + lineEnd;
+        generalCSV += StatsToString(avgStats) + lineEnd;
+        generalCSV += StatsToString(maxStats) + lineEnd;
+        generalCSV += StatsToString(minStats) + lineEnd;
+
+        iterationStatsCSV += string.Join(delim, Enum.GetValues(typeof(IterationStat)).Cast<IterationStat>().Select(x => x.ToString())) + lineEnd;
+        iterationStatsCSV += StatsToString(iterationStats);
+
+        // Save file
+        var postFilename = "_" + DateTime.Now.ToString("MMddyy_Hmm") + ".txt";
+        Debug.Log("Metric reporting (Individual): \n" + metricCSV);
+        Save(Application.dataPath + "/Report", "MetricReportingInd" + postFilename, metricCSV);
+        Debug.Log("Metric reporting (General): \n" + generalCSV);
+        Save(Application.dataPath + "/Report", "MetricReportingGen" + postFilename, generalCSV);
+        Debug.Log("Iteration statistics: \n" + iterationStatsCSV);
+        Save(Application.dataPath + "/Report", "IterationStatistics" + postFilename, iterationStatsCSV);
 
         //if (Parameters.Benchmarking.COLUMNAR_LOGGING)
         /*
@@ -113,20 +143,38 @@ public class BenchmarkUtility
         //Debug.Log(logHeader.Invoke() + "\n" + log);
     }
 
-    public static void Save(string path)
+    public static bool Save(string path, string fileName, string data)
     {
-        /*
+        bool retValue;
+        try
+        {
+            if (!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            File.WriteAllText($"{path}/{fileName}", data);
+            retValue = true;
+            Debug.Log($"Saved {path}/{fileName}");
+        }
+        catch (Exception e)
+        {
+            string ErrorMessages = "File Write Error\n" + e.Message;
+            retValue = false;
+            Debug.LogError(ErrorMessages);
+        }
+
+        return retValue;
+    }
+
+    public static void Save(string path, string data)
+    {
         if (File.Exists(path))
         {
-            File.AppendAllText(path, log + "\n");
+            File.AppendAllText(path, data + "\n");
         } else
         {
             var sr = File.AppendText(path);
-            sr.WriteLine(logHeader.Invoke());
-            sr.WriteLine(log);
+            sr.WriteLine(data);
             sr.Close();
         }
-        */
     }
 
     #endregion
@@ -178,6 +226,10 @@ public class BenchmarkUtility
 
             switch (stat)
             {
+                // Human or Agent
+                case AgentStat.IS_AGENT:
+                    val = info.isAgent;
+                    break;
                 //Primary Metrics
                 case AgentStat.AGENT_COLLISION_COUNT:
                     val = info.agentCollisionCount;
@@ -324,21 +376,21 @@ public class BenchmarkUtility
     {
         string str;
 
-        //if (!Parameters.Benchmarking.COLUMNAR_LOGGING)
+        /* (!Parameters.Benchmarking.COLUMNAR_LOGGING)
         if (true)
-        {
-            str = string.Join(",\t", Enum.GetValues(typeof(T)).Cast<T>().Select(stat =>
+        {*/
+            str = string.Join(",", Enum.GetValues(typeof(T)).Cast<T>().Select(stat =>
             {
                 return stats[stat].ToString();
             }).ToArray());
-        }
+        /*}
         else
         {
             str = string.Join("\n", Enum.GetValues(typeof(T)).Cast<T>().Select(stat =>
             {
-                return columnarPrefix + stat + ",\t" + stats[stat].ToString();
+                return columnarPrefix + stat + "," + stats[stat].ToString();
             }).ToArray());
-        }
+        }*/
 
         return str;
     }

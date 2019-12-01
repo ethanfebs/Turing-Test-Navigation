@@ -100,10 +100,15 @@
     <Compile Include="Assets\Unity Runtime Recorder\Scripts\UnityAnimSaver\UnityBlendShapeAnimation.cs" />
     <Compile Include="Assets\Unity Runtime Recorder\Scripts\UnityAnimSaver\UnityCurveContainer.cs" />
     <Compile Include="Assets\Unity Runtime Recorder\Scripts\UnityAnimSaver\UnityObjectAnimation.cs" />
+    <None Include="Assets\Report\MetricReportingGen_120119_1731.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Leading Characters.txt" />
+    <None Include="Assets\ReportIterationStatistics_120119_1727.txt" />
+    <None Include="Assets\Report\IterationStatistics_120119_1731.txt" />
+    <None Include="Assets\Report\MetricReportingInd_120119_1731.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMPro_Properties.cginc" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Bitmap-Custom-Atlas.shader" />
+    <None Include="Assets\ReportMetricReportingInd_120119_1727.txt" />
     <None Include="Assets\TextMesh Pro\Resources\LineBreaking Following Characters.txt" />
     <None Include="Assets\TextMesh Pro\Sprites\EmojiOne Attribution.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile Masking.shader" />
@@ -117,6 +122,7 @@
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Mobile.shader" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_Sprite.shader" />
+    <None Include="Assets\ReportMetricReportingGen_120119_1727.txt" />
     <None Include="Assets\TextMesh Pro\Resources\Shaders\TMP_SDF-Surface.shader" />
     <Reference Include="Unity.Timeline.Editor">
       <HintPath>/Users/ericashout/Documents/Project523/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>

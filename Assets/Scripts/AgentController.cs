@@ -98,8 +98,7 @@ public class AgentController : MonoBehaviour
                 spawnObject.GetComponent<UnityAnimationRecorder>().StartRecording();
             }
 
-            // Change position of spawn based on list index
-
+            spawnObject.AddComponent<InfoCollector>();
             
         }
     }
@@ -131,10 +130,7 @@ public class AgentController : MonoBehaviour
                 //pCont.setTarget(pTrans.position + new Vector3(0, 0, 20));
                 doneCount++;
                 //print(doneCount);
-
             }
-
-
 
             //"Bunching" Prevention Algorithm
             foreach (GameObject p2 in playerArr)
@@ -195,6 +191,7 @@ public class AgentController : MonoBehaviour
 
             controlledTransform.gameObject.GetComponent<UnityAnimationRecorder>().StopRecording();
 
+            BenchmarkUtility.ComputeStatistics();
 
         }
 

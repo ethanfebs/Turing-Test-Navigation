@@ -1,8 +1,15 @@
 ﻿<Properties StartupConfiguration="{0BF81A52-332A-5CC0-1D71-BD861A5D70FB}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Benchmarking/InfoCollector.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Report/IterationStatistics_120119_1757.txt">
     <Files>
-      <File FileName="Assets/Benchmarking/BenchmarkUtility.cs" Line="225" Column="1" />
-      <File FileName="Assets/Benchmarking/InfoCollector.cs" Line="1" Column="1" />
+      <File FileName="Assets/Benchmarking/BenchmarkUtility.cs" Line="128" Column="1" />
+      <File FileName="Assets/Benchmarking/InfoCollector.cs" Line="71" Column="36" />
+      <File FileName="Assets/Scripts/PlayerController.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/DirectorScript.cs" Line="113" Column="18" />
+      <File FileName="Assets/Scripts/AgentController.cs" Line="132" Column="36" />
+      <File FileName="Assets/Unity Runtime Recorder/Scripts/UnityAnimSaver/UnityAnimationRecorder.cs" Line="196" Column="1" />
+      <File FileName="Assets/Report/IterationStatistics_120119_1731.txt" Line="6" Column="1" />
+      <File FileName="Assets/Report/MetricReportingGen_120119_1731.txt" Line="1" Column="1" />
+      <File FileName="Assets/Report/IterationStatistics_120119_1757.txt" Line="1" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -10,7 +17,14 @@
           <Node name="Project523" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Benchmarking" expanded="True">
-                <Node name="InfoCollector.cs" selected="True" />
+                <Node name="BenchmarkUtility.cs" selected="True" />
+              </Node>
+              <Node name="Report" expanded="True" />
+              <Node name="Scripts" expanded="True" />
+              <Node name="Unity Runtime Recorder" expanded="True">
+                <Node name="Scripts" expanded="True">
+                  <Node name="UnityAnimSaver" expanded="True" />
+                </Node>
               </Node>
             </Node>
           </Node>

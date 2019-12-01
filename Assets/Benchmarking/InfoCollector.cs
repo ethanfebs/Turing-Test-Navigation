@@ -9,6 +9,7 @@ public class InfoCollector : MonoBehaviour {
     public Vector3 targetPos;
     public float mass;
     public int agentIndex;
+    public int isAgent;
 
     public int agentCollisionCount = 0;
     public int obstacleCollisionCount = 0;
@@ -32,7 +33,7 @@ public class InfoCollector : MonoBehaviour {
 
     #endregion
     
-    public InfoCollector()
+    void Start()
     {
         posToVel = new MetricBuffer<Vector3, Vector2>(2, (buffer) => {
             var vel3 = buffer.GetAt(1) - buffer.GetAt(0);
@@ -70,8 +71,8 @@ public class InfoCollector : MonoBehaviour {
             return Mathf.Abs(data);
         }, (a, b) => a + b, 0);
 
-        bool isAgent = gameObject.CompareTag("Player");
-        BenchmarkUtility.AddInfoCollector(this, isAgent);
+        isAgent = gameObject.CompareTag("Player") ? 1 : 0; // agents are tagged "Player"
+        BenchmarkUtility.AddInfoCollector(this);
     }
 
     private void FixedUpdate()
