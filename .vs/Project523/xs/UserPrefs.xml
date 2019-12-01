@@ -1,0 +1,28 @@
+﻿<Properties StartupConfiguration="{0BF81A52-332A-5CC0-1D71-BD861A5D70FB}|">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Benchmarking/InfoCollector.cs">
+    <Files>
+      <File FileName="Assets/Benchmarking/BenchmarkUtility.cs" Line="225" Column="1" />
+      <File FileName="Assets/Benchmarking/InfoCollector.cs" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Project523" expanded="True">
+            <Node name="Assets" expanded="True">
+              <Node name="Benchmarking" expanded="True">
+                <Node name="InfoCollector.cs" selected="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Assembly-CSharp PreferredExecutionTarget="fbc4dce1-5109-4ec1-a9ce-664e9b4b1f6a" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
