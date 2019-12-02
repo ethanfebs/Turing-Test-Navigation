@@ -41,7 +41,7 @@ public class AgentController : MonoBehaviour
             doneArr[x] = false;
         }
 
-        //print(playerArr.Length.ToString());
+        print("length: "+playerArr.Length.ToString());
 
         int dest;
 
@@ -93,13 +93,12 @@ public class AgentController : MonoBehaviour
                 spawnObject = Instantiate(playerPrefab);
                 spawnObject.name = $"Player({i})";
                 spawnObject.GetComponent<UnityAnimationRecorder>().fileName = $"Player-{i}-Animation";
-                spawnObject.transform.position = new Vector3(row, 0f, col) * spawnDist + new Vector3(0,2.0f,0);
+                spawnObject.transform.position = new Vector3(row, 0f, col) * spawnDist + new Vector3(0,0.0f,0);
                 players.Add(spawnObject);
                 spawnObject.GetComponent<UnityAnimationRecorder>().StartRecording();
             }
 
-            // Change position of spawn based on list index
-
+            spawnObject.AddComponent<InfoCollector>();
             
         }
     }
@@ -111,7 +110,11 @@ public class AgentController : MonoBehaviour
         PlayerController pCont;
         PlayerController p2Cont;
 
-        for(int x=0;x<playerArr.Length;x++)
+        print("SPEED: " + Input.GetAxis("Vertical"));
+
+        controlledTransform.gameObject.GetComponent<Animator>().SetFloat("Vertical", Input.GetAxis("Vertical") );
+
+        for (int x = 0; x < playerArr.Length; x++)
         {
             GameObject p = playerArr[x];
 
@@ -120,10 +123,20 @@ public class AgentController : MonoBehaviour
 
             pCont = p.GetComponent("PlayerController") as PlayerController;
 
+            if (p.GetComponent<NavMeshAgent>() != null)
+            {
+                p.GetComponent<Animator>().SetFloat("Vertical", Vector3.Magnitude(p.GetComponent<NavMeshAgent>().velocity));
+            }
+            else if (p.GetComponent<RRTAlgo>() != null)
+            {
+                p.GetComponent<Animator>().SetFloat("Vertical", p.GetComponent<RRTAlgo>().speed);
+            }
+            else Debug.Log("The Animator could not animate: speed needs to be designated");
+
             if (pTrans.position.z > 47 && pTrans.position.z < 53 && pTrans.position.x > -3 && pTrans.position.x < 3) {
 
 
-                p.GetComponent<NavMeshAgent>().enabled = false;
+                if (p.GetComponent<NavMeshAgent>() != null) p.GetComponent<NavMeshAgent>().enabled = false;
                 //p.GetComponent<UnityAnimationRecorder>().StopRecording();
                 //p.SetActive(false);
                 p.transform.position = new Vector3(-500+doneCount*5, 0, 0);
@@ -131,10 +144,7 @@ public class AgentController : MonoBehaviour
                 //pCont.setTarget(pTrans.position + new Vector3(0, 0, 20));
                 doneCount++;
                 //print(doneCount);
-
             }
-
-
 
             //"Bunching" Prevention Algorithm
             foreach (GameObject p2 in playerArr)
@@ -162,6 +172,8 @@ public class AgentController : MonoBehaviour
             }
         }
 
+        //print("cont pos: " + controlledTransform.position.ToString());
+
         if (controlledTransform.position.z > 47 && controlledTransform.position.z < 53 && controlledTransform.position.x > -3 && controlledTransform.position.x < 3)
         {
             controlledTransform.gameObject.GetComponent<FirstPersonAIO>().playerCanMove = false;
@@ -177,14 +189,22 @@ public class AgentController : MonoBehaviour
 
         bool allDone = true;
 
-        foreach(bool b in doneArr)
+        for(int x = 0; x < 9; x++)
+        {
+            if (!doneArr[x]) { allDone = false; }
+            //print(x + " is " + doneArr[x]);
+        }
+
+        /*foreach (bool b in doneArr)
         {
 
             if (!b) { allDone = false; }
-        }
+        }*/
 
         if (allDone && noAnimations)
         {
+
+            print("BIG DAY");
 
             noAnimations = false;
 
@@ -195,6 +215,7 @@ public class AgentController : MonoBehaviour
 
             controlledTransform.gameObject.GetComponent<UnityAnimationRecorder>().StopRecording();
 
+            BenchmarkUtility.ComputeStatistics();
 
         }
 

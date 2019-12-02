@@ -1611,9 +1611,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   controlledTransform: {fileID: 983038801210395514}
-  controlledPrefab: {fileID: 1753996195182887910, guid: 6f7b84b7c19d6499abd802d6616a295b,
+  controlledPrefab: {fileID: 939209398524272563, guid: bda8702a422774e4290d333b28be3466,
     type: 3}
-  playerPrefab: {fileID: 6626772045801701258, guid: d3ad5838bdf3c429c986cc5a9682768a,
+  playerPrefab: {fileID: 4661880201089300360, guid: 68f3baeb4fb424520b036052ce92a8b9,
     type: 3}
 --- !u!4 &1993408205
 Transform:

@@ -50,8 +50,9 @@ public class RRTAlgo : MonoBehaviour
 
         obs = GameObject.FindGameObjectsWithTag("obstacles");
 
-        offset = new Vector3(0, GetComponent<Collider>().bounds.extents.y, 0);
-        
+        //offset = new Vector3(0, GetComponent<Collider>().bounds.extents.y, 0);
+        offset = new Vector3(0, 0, 0);
+
         foreach (GameObject ob in obs)
         {
             obCol.Add(ob.GetComponent<Collider>());

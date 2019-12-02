@@ -45,7 +45,7 @@ public class DirectorScript : MonoBehaviour
             else
             {
                 //print("pos "+t.position.ToString());
-                t.localPosition = new Vector3(0, 0, 0);
+                t.localPosition = new Vector3(0, 1, 0);
             }
 
 
@@ -98,9 +98,7 @@ public class DirectorScript : MonoBehaviour
                 }*/
 
                 foreach (Animation animationItem in animationsInTheScene)
-                    {
-
-
+                {
                     if (animationItem.enabled)
                     {
                         animationItem.enabled = false;
@@ -112,10 +110,7 @@ public class DirectorScript : MonoBehaviour
                     //animationItem.enabled = !animationItem.enabled;
                     //animationItem.Stop();
                     //animationItem.Rewind();
-
-                    }
-
-
+                }
             }
 
             /*if (Input.GetKeyDown(KeyCode.A))
