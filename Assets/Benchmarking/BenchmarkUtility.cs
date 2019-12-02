@@ -109,22 +109,28 @@ public class BenchmarkUtility
         }
 
         // General metrics
-        generalCSV += string.Join(delim, agentStatsEnums.Select(x => x.ToString())) + lineEnd;
-        generalCSV += StatsToString(avgStats) + lineEnd;
-        generalCSV += StatsToString(maxStats) + lineEnd;
-        generalCSV += StatsToString(minStats) + lineEnd;
+        // Titles
+        generalCSV += string.Join(delim, agentStatsEnums.Select(x => x.ToString()));
+        generalCSV += lineEnd;
+        // Data
+        generalCSV += "Average: " + StatsToString(avgStats) + lineEnd;
+        generalCSV += "Max: " + StatsToString(maxStats) + lineEnd;
+        generalCSV += "Min: " + StatsToString(minStats) + lineEnd;
 
-        iterationStatsCSV += string.Join(delim, Enum.GetValues(typeof(IterationStat)).Cast<IterationStat>().Select(x => x.ToString())) + lineEnd;
+        iterationStatsCSV += string.Join(delim, Enum.GetValues(typeof(IterationStat)).Cast<IterationStat>().Select(x => x.ToString()));
+        iterationStatsCSV += lineEnd;
         iterationStatsCSV += StatsToString(iterationStats);
 
         // Save file
         var postFilename = "_" + DateTime.Now.ToString("MMddyy_Hmm") + ".csv";
         Debug.Log("Metric reporting (Individual): \n" + metricCSV);
-        Save(Application.dataPath + "/Report", "MetricReportingInd" + postFilename, metricCSV);
+        Save(Application.dataPath + "/Report", "MetricReporting" + postFilename, metricCSV);
+        /*
         Debug.Log("Metric reporting (General): \n" + generalCSV);
         Save(Application.dataPath + "/Report", "MetricReportingGen" + postFilename, generalCSV);
+        */
         Debug.Log("Iteration statistics: \n" + iterationStatsCSV);
-        Save(Application.dataPath + "/Report", "IterationStatistics" + postFilename, iterationStatsCSV);
+        Save(Application.dataPath + "/Report", "IterationStatistics" + postFilename, iterationStatsCSV + lineEnd + generalCSV);
 
         //if (Parameters.Benchmarking.COLUMNAR_LOGGING)
         /*
