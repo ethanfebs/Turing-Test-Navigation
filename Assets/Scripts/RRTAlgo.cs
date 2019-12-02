@@ -182,13 +182,13 @@ public class RRTAlgo : MonoBehaviour
 
             if (flag)
             {
-                //Debug.DrawLine(closest.pos, nextStep, Color.red, 30f);
+                Debug.DrawLine(closest.pos, nextStep, Color.red, 30f);
                 continue;
             }
 
             else
             {
-                //Debug.DrawLine(closest.pos, nextStep, Color.white, 30f);
+                Debug.DrawLine(closest.pos, nextStep, Color.white, 30f);
                 TreeNode newLeaf = new TreeNode(new Vector3(nextStep.x, 0f, nextStep.z));
                 closest.AddChild(newLeaf);
                 return newLeaf;
@@ -218,7 +218,7 @@ public class RRTAlgo : MonoBehaviour
         //Debug.Log("fkldsja;flsdjf");
         canMove = false;
         //FindPath(true);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.4f);
         canMove = true;
         //yield return null;
     }

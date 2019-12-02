@@ -10,6 +10,7 @@ TagManager:
   - ControlledPlayer
   - obstacles
   - floor
+  - FirstPersonObstacles
   layers:
   - Default
   - TransparentFX
