@@ -98,9 +98,7 @@ public class DirectorScript : MonoBehaviour
                 }*/
 
                 foreach (Animation animationItem in animationsInTheScene)
-                    {
-
-
+                {
                     if (animationItem.enabled)
                     {
                         animationItem.enabled = false;
@@ -112,10 +110,7 @@ public class DirectorScript : MonoBehaviour
                     //animationItem.enabled = !animationItem.enabled;
                     //animationItem.Stop();
                     //animationItem.Rewind();
-
-                    }
-
-
+                }
             }
 
             /*if (Input.GetKeyDown(KeyCode.A))
