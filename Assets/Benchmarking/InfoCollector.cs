@@ -71,7 +71,7 @@ public class InfoCollector : MonoBehaviour {
             return Mathf.Abs(data);
         }, (a, b) => a + b, 0);
 
-        isAgent = gameObject.CompareTag("Player") ? 1 : 0; // agents are tagged "Player"
+        isAgent = gameObject.CompareTag("Player") ? 1 : -1; // agents are tagged "Player"
         BenchmarkUtility.AddInfoCollector(this);
     }
 
