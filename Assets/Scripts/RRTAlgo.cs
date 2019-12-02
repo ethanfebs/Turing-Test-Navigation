@@ -111,24 +111,23 @@ public class RRTAlgo : MonoBehaviour
                 {
                     //enable navmesh agent and get to the end
                 }
-                /*
-                // decide the moveDis for this frame. 
-                //(Mathf.Clamp limits the first value, to make sure if the distance between the player and the destination pos is short than you set,
-                // it only need to move to the destination. So at that moment, the moveDis should set to the "dis".)
-                //float moveDis = Mathf.Clamp(moveDisPerSec * Time.fixedDeltaTime, 0, dis);
-                float moveDis = Mathf.Clamp(.5f * Time.fixedDeltaTime, 0, dis);
 
-                //get the unit vector which means the move direction, and multiply by the move distance.
-                Vector3 move = (curDest - transform.position).normalized * moveDis;
-                transform.Translate(move);
+                //transform.LookAt(new Vector3(0, 0, curDest.z));
 
-                //float walk = speed * Time.deltaTime;
-                //transform.position = Vector3.MoveTowards(transform.position, curDest, walk);
-                transform.rotation = Quaternion.Slerp(transform.rotation,
-     Quaternion.LookRotation(curDest - transform.position), 3 * Time.deltaTime);
 
-                //code for following the player
-                transform.position += transform.forward * speed * Time.deltaTime;*/
+                Vector3 targetDirection = curDest - transform.position;
+
+                // The step size is equal to speed times frame time.
+                float singleStep = 1.0f * Time.deltaTime;
+
+                // Rotate the forward vector towards the target direction by one step
+                Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 0.0f);
+
+                // Draw a ray pointing at our target in
+                Debug.DrawRay(transform.position, newDirection, Color.red);
+
+                // Calculate a rotation a step closer to the target and applies rotation to this object
+                transform.rotation = Quaternion.LookRotation(newDirection);
 
                 float walk = speed * Time.fixedDeltaTime;
                 transform.position = Vector3.MoveTowards(transform.position, curDest + offset, walk);
@@ -183,13 +182,13 @@ public class RRTAlgo : MonoBehaviour
 
             if (flag)
             {
-                Debug.DrawLine(closest.pos, nextStep, Color.red, 30f);
+                //Debug.DrawLine(closest.pos, nextStep, Color.red, 30f);
                 continue;
             }
 
             else
             {
-                Debug.DrawLine(closest.pos, nextStep, Color.white, 30f);
+                //Debug.DrawLine(closest.pos, nextStep, Color.white, 30f);
                 TreeNode newLeaf = new TreeNode(new Vector3(nextStep.x, 0f, nextStep.z));
                 closest.AddChild(newLeaf);
                 return newLeaf;
