@@ -45,7 +45,7 @@ public class DirectorScript : MonoBehaviour
             else
             {
                 //print("pos "+t.position.ToString());
-                t.localPosition = new Vector3(0, 0, 0);
+                t.localPosition = new Vector3(0, 1, 0);
             }
 
 

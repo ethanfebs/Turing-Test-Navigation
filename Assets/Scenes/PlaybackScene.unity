@@ -1492,7 +1492,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   human: {fileID: 2100000, guid: a5922b30c5de2a242bf6a40d4858b2f7, type: 2}
   agent: {fileID: 2100000, guid: 7901cec7b9c7442dca5336b0c50e32d9, type: 2}
-  humanControlled: 2
+  humanControlled: 1
   EndText: {fileID: 1632171758}
 --- !u!4 &1379200836
 Transform:
