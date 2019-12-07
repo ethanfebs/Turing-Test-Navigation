@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using static UnityAnimationRecorder;
 
 public class AgentController : MonoBehaviour
 {
@@ -135,15 +136,20 @@ public class AgentController : MonoBehaviour
 
             if (pTrans.position.z > 47 && pTrans.position.z < 53 && pTrans.position.x > -3 && pTrans.position.x < 3) {
 
+                BenchmarkUtility.StopInfoCollector(p.GetComponent<InfoCollector>());
 
                 if (p.GetComponent<NavMeshAgent>() != null) p.GetComponent<NavMeshAgent>().enabled = false;
                 //p.GetComponent<UnityAnimationRecorder>().StopRecording();
                 //p.SetActive(false);
+
+
                 p.transform.position = new Vector3(-500+doneCount*5, 0, 0);
                 doneArr[x] = true;
                 //pCont.setTarget(pTrans.position + new Vector3(0, 0, 20));
                 doneCount++;
                 //print(doneCount);
+
+                
             }
 
             //"Bunching" Prevention Algorithm
@@ -184,6 +190,7 @@ public class AgentController : MonoBehaviour
             doneArr[8] = true;
             doneCount++;
             //print(doneCount);
+            BenchmarkUtility.StopInfoCollector(controlledTransform.gameObject.GetComponent<InfoCollector>());
         }
 
 

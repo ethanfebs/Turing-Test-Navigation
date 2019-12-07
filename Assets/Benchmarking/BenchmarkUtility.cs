@@ -17,6 +17,8 @@ public class BenchmarkUtility
 
     public static List<InfoCollector> allInfoCollectors = new List<InfoCollector>();
     public static int agentCount;
+    public static List<Dictionary<AgentStat, float>> agentStats = new List<Dictionary<AgentStat, float>>();
+    public static int agentsInUse;
 
     #region Enums
 
@@ -76,7 +78,17 @@ public class BenchmarkUtility
     public static void AddInfoCollector(InfoCollector ic)
     {
         allInfoCollectors.Add(ic);
-        if (ic.isAgent == 1) agentCount++;
+        if (ic.isAgent == 1) 
+        { 
+            agentCount++;
+            agentsInUse++;
+        }
+    }
+
+    public static void StopInfoCollector(InfoCollector ic)
+    {
+        agentStats.Add(ComputeAgentStatistics(ic));
+
     }
 
     public static void ComputeStatistics()
@@ -89,12 +101,6 @@ public class BenchmarkUtility
         var agentStatsEnums = Enum.GetValues(typeof(AgentStat)).Cast<AgentStat>();
 
         var iterationStats = ComputeIterationStatistics();
-
-        var agentStats = new List<Dictionary<AgentStat, float>>();
-        foreach (var infoCollector in allInfoCollectors)
-        {
-            agentStats.Add(ComputeAgentStatistics(infoCollector));
-        }
 
         var avgStats = AverageAgentStats(agentStats);
         var maxStats = MaxAgentStats(agentStats);
