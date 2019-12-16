@@ -423,7 +423,7 @@ MonoBehaviour:
   playerCanMove: 1
   walkByDefault: 0
   walkSpeed: 3
-  sprintSpeed: 5
+  sprintSpeed: 3
   jumpPower: 5
   canJump: 0
   canHoldJump: 0
