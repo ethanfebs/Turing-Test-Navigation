@@ -15,6 +15,8 @@ public class InfoCollector : MonoBehaviour {
     public int obstacleCollisionCount = 0;
     public int totalFrames = 0;
 
+    int iter = 0;
+
     #region Metrics
 
     public MetricBuffer<Vector3, Vector2> posToVel;
@@ -77,7 +79,16 @@ public class InfoCollector : MonoBehaviour {
 
     private void FixedUpdate()
     {
+        /*if (iter == 10)
+        {
+            PositionUpdate(transform.position);
+            iter = 0;
+        }
+        else
+            iter++;*/
+
         PositionUpdate(transform.position);
+
     }
 
     public void PositionUpdate(Vector3 position) {
@@ -88,8 +99,10 @@ public class InfoCollector : MonoBehaviour {
             if (velToSpeed.Update(vel)) //Compute speed from velocity
             {
                 var speed = velToSpeed.Next();
-
+                
                 maxSpeed = Mathf.Max(maxSpeed, speed);
+
+                //print(speed/Time.fixedDeltaTime);
 
                 if (speedToSpeedChange.Update(speed))   //Compute speed change from speed
                 {

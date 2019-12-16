@@ -51,6 +51,7 @@ public class AgentController : MonoBehaviour
             dest = Random.Range(0, 7);
 
             p.GetComponent<NavMeshAgent>().SetDestination(exitArr[0].GetComponent<Transform>().position);
+            p.GetComponent<NavMeshAgent>().updatePosition = false;
         }
 
         dest = Random.Range(0, 7);
@@ -99,7 +100,10 @@ public class AgentController : MonoBehaviour
                 spawnObject.GetComponent<UnityAnimationRecorder>().StartRecording();
             }
 
+            spawnObject.GetComponent<Animator>().applyRootMotion = false;
+
             spawnObject.AddComponent<InfoCollector>();
+            spawnObject.GetComponent<InfoCollector>().mass = 70f;
             
         }
     }
@@ -111,13 +115,21 @@ public class AgentController : MonoBehaviour
         PlayerController pCont;
         PlayerController p2Cont;
 
-        print("SPEED: " + Input.GetAxis("Vertical"));
+        //print("SPEED: " + Input.GetAxis("Vertical"));
 
         controlledTransform.gameObject.GetComponent<Animator>().SetFloat("Vertical", Input.GetAxis("Vertical") );
+
+        //print(controlledTransform.gameObject.GetComponent<InfoCollector>().maxSpeed / Time.fixedDeltaTime);
 
         for (int x = 0; x < playerArr.Length; x++)
         {
             GameObject p = playerArr[x];
+
+            //print(p.ToString()+": "+p.GetComponent<InfoCollector>().maxSpeed / Time.fixedDeltaTime);
+            //print(p.GetComponent<Transform>().position + p.GetComponent<NavMeshAgent>().desiredVelocity);
+            p.GetComponent<Transform>().position = p.GetComponent<Transform>().position +
+                Vector3.Scale(p.GetComponent<NavMeshAgent>().desiredVelocity, new Vector3(Time.deltaTime, Time.deltaTime, Time.deltaTime));
+            p.GetComponent<NavMeshAgent>().nextPosition = p.GetComponent<Transform>().position;
 
             pTrans = p.GetComponent("Transform") as Transform;
 
@@ -228,4 +240,5 @@ public class AgentController : MonoBehaviour
 
         //endGame = Vector3.Distance(controlledTransform.position, goal) < 1;
     }
+
 }
