@@ -114,7 +114,7 @@ public class RRTAlgo : MonoBehaviour
 
                 //transform.LookAt(new Vector3(0, 0, curDest.z));
 
-
+                /*
                 Vector3 targetDirection = curDest - transform.position;
 
                 // The step size is equal to speed times frame time.
@@ -128,7 +128,7 @@ public class RRTAlgo : MonoBehaviour
 
                 // Calculate a rotation a step closer to the target and applies rotation to this object
                 transform.rotation = Quaternion.LookRotation(newDirection);
-
+                */
                 float walk = speed * Time.fixedDeltaTime;
                 transform.position = Vector3.MoveTowards(transform.position, curDest + offset, walk);
                 //print("still in this pos");
