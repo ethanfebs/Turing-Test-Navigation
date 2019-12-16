@@ -134,6 +134,8 @@ GameObject:
   - component: {fileID: 4661880201096709204}
   - component: {fileID: 210709243897539411}
   - component: {fileID: 2741236185014211085}
+  - component: {fileID: -5251086709563339196}
+  - component: {fileID: -7129211279784615526}
   m_Layer: 9
   m_Name: Mannequin_5_3_Optimized@Idle
   m_TagString: Player
@@ -221,6 +223,32 @@ MonoBehaviour:
   timeScaleOnStart: 0
   timeScaleOnRecord: 1
   recordBlendShape: 0
+--- !u!114 &-5251086709563339196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4661880201089300360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2709f90f1008e4a5d9e35d09268de30c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &-7129211279784615526
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4661880201089300360}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.33
+  m_Height: 2.524715
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.7623575, z: 0}
 --- !u!1 &4661880201089300362
 GameObject:
   m_ObjectHideFlags: 0
