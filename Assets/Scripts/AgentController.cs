@@ -85,7 +85,7 @@ public class AgentController : MonoBehaviour
                 spawnObject = Instantiate(controlledPrefab);
                 controlledTransform = spawnObject.transform;
                 spawnObject.transform.position = new Vector3(row, 0f, col) * spawnDist;
-                spawnObject.GetComponent<UnityAnimationRecorder>().fileName = $"Player-{i}-Animation_" + System.DateTime.Now.ToString("MMddyy_Hmmss");
+                spawnObject.GetComponent<UnityAnimationRecorder>().fileName = $"Player-{i}-Animation_" + System.DateTime.Now.ToString("MMddyy_Hmmss")+"_human";
                 spawnObject.GetComponent<UnityAnimationRecorder>().StartRecording();
                 print("HUMAN CONTROLLED PLAYER: " + i);
             }
